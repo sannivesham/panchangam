@@ -1,0 +1,647 @@
+:root {
+  --primary-maroon: #6B0F1A;
+  --primary-maroon-dark: #4A070F;
+  --primary-maroon-light: #8E1524;
+  --antique-gold: #C59B27;
+  --gold-light: #F4E8C1;
+  --gold-bright: #D4AF37;
+  --saffron: #D85A19;
+  --saffron-light: #FBECE5;
+  --ivory-bg: #FAF6EE;
+  --card-bg: #FFFFFF;
+  --card-alt: #FCF9F3;
+  --text-dark: #2A1D15;
+  --text-muted: #665548;
+  --border-gold: rgba(197, 155, 39, 0.35);
+  --border-subtle: #E8DFCE;
+  --shadow-sm: 0 2px 6px rgba(107, 15, 26, 0.06);
+  --shadow-md: 0 4px 14px rgba(107, 15, 26, 0.1);
+  --shadow-lg: 0 8px 24px rgba(107, 15, 26, 0.15);
+  --font-telugu: 'Mandali', 'Noto Sans Telugu', 'Gautami', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--ivory-bg);
+  color: var(--text-dark);
+  font-family: var(--font-telugu);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--ivory-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--antique-gold);
+  border-radius: 4px;
+}
+
+/* Container */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem 1rem;
+}
+
+/* Header */
+.app-header {
+  background: linear-gradient(135deg, var(--primary-maroon-dark) 0%, var(--primary-maroon) 50%, #520912 100%);
+  color: #FFFDF7;
+  border-bottom: 3px solid var(--antique-gold);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-top {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.om-symbol {
+  font-size: 2.2rem;
+  color: var(--gold-bright);
+  text-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
+  line-height: 1;
+}
+
+.title-group h1 {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: #FFFDF7;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.1rem;
+}
+
+.title-group p {
+  font-size: 0.85rem;
+  color: var(--gold-light);
+  opacity: 0.9;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: #FFFDF7;
+  padding: 0.45rem 0.9rem;
+  border-radius: 9999px;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+.btn-pill:hover {
+  background: rgba(212, 175, 55, 0.25);
+  border-color: var(--gold-bright);
+}
+
+.btn-lang {
+  background: var(--antique-gold);
+  color: #2A1D15;
+  font-weight: 700;
+  border: none;
+}
+.btn-lang:hover {
+  background: #E5BE4A;
+}
+
+/* Nav Tabs */
+.header-nav {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.header-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-tab {
+  padding: 0.7rem 1.1rem;
+  color: var(--gold-light);
+  border: none;
+  background: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.nav-tab:hover {
+  color: #FFFDF7;
+}
+
+.nav-tab.active {
+  color: #FFFDF7;
+  border-bottom-color: var(--gold-bright);
+  background: rgba(212, 175, 55, 0.12);
+}
+
+/* Cards */
+.traditional-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-gold);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.traditional-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.card-header-traditional {
+  background: linear-gradient(90deg, #F9F3E5 0%, #FAF6EE 100%);
+  border-bottom: 1px solid var(--border-gold);
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title {
+  color: var(--primary-maroon);
+  font-size: 1.15rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-body {
+  padding: 1.25rem;
+}
+
+/* Banner */
+.panchangam-banner {
+  background: linear-gradient(135deg, var(--primary-maroon) 0%, #4E0A12 100%);
+  border: 2px solid var(--antique-gold);
+  border-radius: 16px;
+  color: #FFFDF7;
+  padding: 1.75rem 1.5rem;
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 1.75rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-ornament {
+  position: absolute;
+  right: -20px;
+  bottom: -30px;
+  font-size: 10rem;
+  color: rgba(212, 175, 55, 0.08);
+  pointer-events: none;
+  line-height: 1;
+}
+
+.banner-date-badge {
+  display: inline-block;
+  background: rgba(212, 175, 55, 0.22);
+  border: 1px solid var(--antique-gold);
+  color: var(--gold-light);
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+}
+
+.banner-headline {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #FFFDF7;
+  margin-bottom: 0.4rem;
+  line-height: 1.35;
+}
+
+.banner-subhead {
+  font-size: 1rem;
+  color: var(--gold-light);
+  opacity: 0.95;
+}
+
+/* Sun Moon Strip */
+.sun-moon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.sun-moon-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-gold);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.sun-moon-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon-sun {
+  background: #FFF3E0;
+  color: #E65100;
+  border: 1px solid #FFE0B2;
+}
+
+.icon-moon {
+  background: #EDE7F6;
+  color: #512DA8;
+  border: 1px solid #D1C4E9;
+}
+
+.sun-moon-details h4 {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.sun-moon-details .time-val {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--primary-maroon);
+}
+
+.sun-moon-details .sub-text {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* 5 Angas Grid */
+.angas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.anga-item {
+  background: #FCFAF6;
+  border: 1px solid var(--border-subtle);
+  border-left: 4px solid var(--antique-gold);
+  border-radius: 8px;
+  padding: 1rem;
+  transition: all 0.2s ease;
+}
+
+.anga-item:hover {
+  border-left-color: var(--primary-maroon);
+  background: #FFFFFF;
+  box-shadow: var(--shadow-sm);
+}
+
+.anga-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.3rem;
+}
+
+.anga-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary-maroon);
+  margin-bottom: 0.4rem;
+}
+
+.anga-timing {
+  font-size: 0.84rem;
+  color: #3D2D20;
+  line-height: 1.4;
+}
+
+.anga-transition-badge {
+  display: inline-block;
+  background: #FEE8D6;
+  color: #C0392B;
+  font-size: 0.74rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+  margin-top: 0.4rem;
+}
+
+/* Muhurthams Table */
+.muhurtham-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .muhurtham-split {
+    grid-template-columns: 1fr;
+  }
+}
+
+.muhurtham-column {
+  background: #FCF9F3;
+  border-radius: 10px;
+  padding: 1rem;
+  border: 1px solid var(--border-gold);
+}
+
+.column-header {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-gold);
+}
+
+.header-auspicious {
+  color: #2E7D32;
+}
+
+.header-inauspicious {
+  color: #C62828;
+}
+
+.timing-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0.6rem 0;
+  border-bottom: 1px dashed rgba(197, 155, 39, 0.25);
+  font-size: 0.92rem;
+}
+.timing-row:last-child {
+  border-bottom: none;
+}
+
+.timing-name {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+.timing-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.timing-val {
+  font-weight: 700;
+  text-align: right;
+  white-space: nowrap;
+}
+.val-auspicious {
+  color: #1B5E20;
+}
+.val-inauspicious {
+  color: #B71C1C;
+}
+
+/* Monthly Calendar Grid */
+.calendar-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+}
+
+.grid-day-header {
+  text-align: center;
+  padding: 0.6rem 0.2rem;
+  background: #F4EAD3;
+  color: var(--primary-maroon);
+  font-weight: 700;
+  font-size: 0.92rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-gold);
+}
+
+.grid-day-cell {
+  background: var(--card-bg);
+  border: 1px solid var(--border-gold);
+  border-radius: 8px;
+  min-height: 105px;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.grid-day-cell:hover {
+  border-color: var(--primary-maroon);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  background: #FFFDF9;
+}
+
+.grid-day-cell.today-cell {
+  border: 2px solid var(--primary-maroon);
+  background: #FFF9F4;
+}
+
+.cell-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.day-number {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1;
+}
+
+.grid-day-cell.sunday .day-number {
+  color: #C62828;
+}
+
+.lunar-icons {
+  display: flex;
+  gap: 0.2rem;
+  font-size: 0.85rem;
+}
+
+.cell-mid {
+  margin: 0.25rem 0;
+}
+
+.cell-tithi {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--primary-maroon);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cell-nakshatra {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.festival-badge {
+  background: linear-gradient(90deg, #8E1524 0%, #6B0F1A 100%);
+  color: #FFFDF7;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 0.2rem;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background: #FFFFFF;
+  border: 2px solid var(--antique-gold);
+  border-radius: 16px;
+  max-width: 560px;
+  width: 100%;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.modal-header {
+  background: linear-gradient(135deg, var(--primary-maroon-dark) 0%, var(--primary-maroon) 100%);
+  color: #FFFDF7;
+  padding: 1rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-body {
+  padding: 1.25rem;
+  overflow-y: auto;
+}
+
+.city-pill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.city-pill {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-gold);
+  border-radius: 8px;
+  background: #FCFAF6;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.2s ease;
+}
+.city-pill:hover, .city-pill.active {
+  background: #F9EED4;
+  border-color: var(--primary-maroon);
+  color: var(--primary-maroon);
+  font-weight: 700;
+}
+
+/* Footer */
+.app-footer {
+  background: var(--primary-maroon-dark);
+  color: var(--gold-light);
+  border-top: 2px solid var(--antique-gold);
+  padding: 1.5rem 1rem;
+  text-align: center;
+  font-size: 0.88rem;
+}
+
+.footer-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
