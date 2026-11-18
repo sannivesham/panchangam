@@ -90,10 +90,18 @@ class SwissEphemeris:
 
         # Fallback to system library if specific file does not exist
         if not os.path.exists(dll_path):
-            try:
-                self._dll = ctypes.cdll.LoadLibrary("swe")
-            except Exception:
-                raise FileNotFoundError(f"Swiss Ephemeris library not found at: {dll_path}")
+            loaded = False
+            for name in ["libswe.so.0", "libswe.so", "swe", "libswe"]:
+                try:
+                    self._dll = ctypes.cdll.LoadLibrary(name)
+                    loaded = True
+                    break
+                except Exception:
+                    pass
+            if not loaded:
+                raise FileNotFoundError(
+                    f"Swiss Ephemeris library not found at: {dll_path}. On Linux, install via: apt-get install -y libswe-dev libswe0"
+                )
         else:
             self._dll = ctypes.cdll.LoadLibrary(dll_path)
 
