@@ -775,23 +775,27 @@ export function fetchFestivalsClient(
   year?: number,
   month?: number,
   region: string = 'ALL'
-): FestivalItem[] {
+): Array<{ date: string; telugu_date: string; telugu_month: string; tithi: string; festival: FestivalItem }> {
   const y = year || new Date().getFullYear();
   const monthsToScan = month ? [month] : Array.from({ length: 12 }, (_, i) => i + 1);
-  const festivals: FestivalItem[] = [];
+  const results: Array<{ date: string; telugu_date: string; telugu_month: string; tithi: string; festival: FestivalItem }> = [];
 
   for (const m of monthsToScan) {
     const mData = calculateMonthlyPanchangamClient(y, m);
     for (const d of mData.days) {
       for (const f of d.festivals) {
         if (region === 'ALL' || f.region === 'ALL' || f.region === region) {
-          if (!festivals.some((existing) => existing.id === f.id && existing.name_english === f.name_english)) {
-            festivals.push(f);
-          }
+          results.push({
+            date: d.date,
+            telugu_date: `${d.telugu_month}, ${d.paksha}, ${d.tithi}`,
+            telugu_month: d.telugu_month,
+            tithi: d.tithi,
+            festival: f,
+          });
         }
       }
     }
   }
 
-  return festivals;
+  return results;
 }

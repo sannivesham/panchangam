@@ -30,14 +30,15 @@ export const FestivalCalendarView: React.FC<Props> = ({ lang, onSelectDate }) =>
   }, [selectedYear, selectedMonth, regionFilter]);
 
   const filteredFestivals = festivals.filter((item) => {
-    const f = item.festival;
+    const f = item.festival || item;
+    if (!f) return false;
     const term = searchTerm.toLowerCase().trim();
     if (!term) return true;
     return (
-      f.name_telugu.toLowerCase().includes(term) ||
-      f.name_english.toLowerCase().includes(term) ||
-      f.description_telugu.toLowerCase().includes(term) ||
-      f.description_english.toLowerCase().includes(term)
+      (f.name_telugu && f.name_telugu.toLowerCase().includes(term)) ||
+      (f.name_english && f.name_english.toLowerCase().includes(term)) ||
+      (f.description_telugu && f.description_telugu.toLowerCase().includes(term)) ||
+      (f.description_english && f.description_english.toLowerCase().includes(term))
     );
   });
 
@@ -135,13 +136,14 @@ export const FestivalCalendarView: React.FC<Props> = ({ lang, onSelectDate }) =>
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.25rem' }}>
           {filteredFestivals.map((item, idx) => {
-            const f = item.festival;
-            const dateObj = new Date(item.date);
-            const dateStr = dateObj.toLocaleDateString(lang === 'te' ? 'te-IN' : 'en-US', {
-              weekday: 'short',
-              month: 'short',
-              day: 'numeric',
-            });
+            const f = item.festival || item;
+            const dateStr = item.date
+              ? new Date(item.date).toLocaleDateString(lang === 'te' ? 'te-IN' : 'en-US', {
+                  weekday: 'short',
+                  month: 'short',
+                  day: 'numeric',
+                })
+              : '';
 
             return (
               <div
@@ -156,10 +158,12 @@ export const FestivalCalendarView: React.FC<Props> = ({ lang, onSelectDate }) =>
               >
                 <div className="card-body" style={{ padding: '1.2rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
-                    <div style={{ background: '#F9EED4', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.8rem', color: '#6B0F1A', fontWeight: 700 }}>
-                      {dateStr}
-                    </div>
-                    {f.region && f.region !== 'ALL' && (
+                    {dateStr && (
+                      <div style={{ background: '#F9EED4', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.8rem', color: '#6B0F1A', fontWeight: 700 }}>
+                        {dateStr}
+                      </div>
+                    )}
+                    {f?.region && f.region !== 'ALL' && (
                       <span
                         style={{
                           background: '#EAE1CE',

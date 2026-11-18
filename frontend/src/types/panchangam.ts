@@ -165,6 +165,14 @@ export interface DailyPanchangamData {
   festivals?: FestivalItem[];
 }
 
+export interface FestivalOccurrence {
+  date: string;
+  telugu_date?: string;
+  telugu_month?: string;
+  tithi?: string;
+  festival: FestivalItem;
+}
+
 export interface MonthlyDayItem {
   date: string;
   day: number;

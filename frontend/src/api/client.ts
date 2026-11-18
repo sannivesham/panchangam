@@ -3,6 +3,7 @@ import {
   MonthlyPanchangamData,
   LocationItem,
   FestivalItem,
+  FestivalOccurrence,
 } from '../types/panchangam';
 import {
   calculateDailyPanchangamClient,
@@ -160,7 +161,7 @@ export async function fetchFestivals(
   year?: number,
   month?: number,
   region: string = 'ALL'
-): Promise<FestivalItem[]> {
+): Promise<FestivalOccurrence[]> {
   if (API_BASE) {
     try {
       const parts: string[] = [`region=${encodeURIComponent(region)}`];
