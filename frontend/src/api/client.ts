@@ -5,7 +5,7 @@ import {
   FestivalItem,
 } from '../types/panchangam';
 
-const API_BASE = ''; // Uses Vite proxy in development
+const API_BASE = import.meta.env.VITE_API_BASE || '';
 
 export interface LocationParams {
   cityId?: string;
