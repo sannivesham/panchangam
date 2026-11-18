@@ -4,6 +4,13 @@ import {
   LocationItem,
   FestivalItem,
 } from '../types/panchangam';
+import {
+  calculateDailyPanchangamClient,
+  calculateMonthlyPanchangamClient,
+  calculateYearlyOverviewClient,
+  fetchFestivalsClient,
+  searchLocationsClient,
+} from '../engine/panchangamCalculator';
 
 const API_BASE = import.meta.env.VITE_API_BASE || '';
 
@@ -33,15 +40,35 @@ export async function fetchDailyPanchangam(
   dateStr?: string,
   locParams: LocationParams = {}
 ): Promise<DailyPanchangamData> {
-  const locQ = buildLocationQuery(locParams);
-  const dateQ = dateStr ? `date=${encodeURIComponent(dateStr)}` : '';
-  const query = [dateQ, locQ].filter(Boolean).join('&');
-
-  const res = await fetch(`${API_BASE}/api/panchangam/daily?${query}`);
-  if (!res.ok) {
-    throw new Error(`Failed to fetch daily panchangam: ${res.statusText}`);
+  if (API_BASE) {
+    try {
+      const locQ = buildLocationQuery(locParams);
+      const dateQ = dateStr ? `date=${encodeURIComponent(dateStr)}` : '';
+      const query = [dateQ, locQ].filter(Boolean).join('&');
+      const res = await fetch(`${API_BASE}/api/panchangam/daily?${query}`);
+      if (res.ok) {
+        return await res.json();
+      }
+    } catch (e) {
+      console.warn("Backend API unavailable, using in-browser astronomical engine:", e);
+    }
+  } else {
+    // If running in development with relative /api proxy
+    try {
+      const locQ = buildLocationQuery(locParams);
+      const dateQ = dateStr ? `date=${encodeURIComponent(dateStr)}` : '';
+      const query = [dateQ, locQ].filter(Boolean).join('&');
+      const res = await fetch(`/api/panchangam/daily?${query}`);
+      if (res.ok) {
+        return await res.json();
+      }
+    } catch {
+      // Fallback
+    }
   }
-  return res.json();
+
+  // Instant in-browser high-precision astronomical calculation (for GitHub Pages / Netlify / Offline)
+  return calculateDailyPanchangamClient(dateStr, locParams);
 }
 
 export async function fetchMonthlyPanchangam(
@@ -49,50 +76,118 @@ export async function fetchMonthlyPanchangam(
   month: number,
   locParams: LocationParams = {}
 ): Promise<MonthlyPanchangamData> {
-  const locQ = buildLocationQuery(locParams);
-  const res = await fetch(
-    `${API_BASE}/api/panchangam/monthly?year=${year}&month=${month}&${locQ}`
-  );
-  if (!res.ok) {
-    throw new Error(`Failed to fetch monthly panchangam: ${res.statusText}`);
+  if (API_BASE) {
+    try {
+      const locQ = buildLocationQuery(locParams);
+      const res = await fetch(`${API_BASE}/api/panchangam/monthly?year=${year}&month=${month}&${locQ}`);
+      if (res.ok) {
+        return await res.json();
+      }
+    } catch (e) {
+      console.warn("Backend API unavailable, using in-browser monthly calculator:", e);
+    }
+  } else {
+    try {
+      const locQ = buildLocationQuery(locParams);
+      const res = await fetch(`/api/panchangam/monthly?year=${year}&month=${month}&${locQ}`);
+      if (res.ok) {
+        return await res.json();
+      }
+    } catch {
+      // Fallback
+    }
   }
-  return res.json();
+
+  return calculateMonthlyPanchangamClient(year, month, locParams);
 }
 
 export async function fetchYearlyOverview(
   year: number,
   locParams: LocationParams = {}
 ): Promise<any> {
-  const locQ = buildLocationQuery(locParams);
-  const res = await fetch(`${API_BASE}/api/panchangam/yearly?year=${year}&${locQ}`);
-  if (!res.ok) {
-    throw new Error(`Failed to fetch yearly overview: ${res.statusText}`);
+  if (API_BASE) {
+    try {
+      const locQ = buildLocationQuery(locParams);
+      const res = await fetch(`${API_BASE}/api/panchangam/yearly?year=${year}&${locQ}`);
+      if (res.ok) {
+        return await res.json();
+      }
+    } catch (e) {
+      console.warn("Backend API unavailable, using in-browser yearly calculator:", e);
+    }
+  } else {
+    try {
+      const locQ = buildLocationQuery(locParams);
+      const res = await fetch(`/api/panchangam/yearly?year=${year}&${locQ}`);
+      if (res.ok) {
+        return await res.json();
+      }
+    } catch {
+      // Fallback
+    }
   }
-  return res.json();
+
+  return calculateYearlyOverviewClient(year, locParams);
 }
 
 export async function searchLocations(query: string): Promise<LocationItem[]> {
-  const res = await fetch(`${API_BASE}/api/locations/search?q=${encodeURIComponent(query)}`);
-  if (!res.ok) {
-    throw new Error(`Location search failed: ${res.statusText}`);
+  if (API_BASE) {
+    try {
+      const res = await fetch(`${API_BASE}/api/locations/search?q=${encodeURIComponent(query)}`);
+      if (res.ok) {
+        const data = await res.json();
+        return data.locations || [];
+      }
+    } catch {
+      // Fallback
+    }
+  } else {
+    try {
+      const res = await fetch(`/api/locations/search?q=${encodeURIComponent(query)}`);
+      if (res.ok) {
+        const data = await res.json();
+        return data.locations || [];
+      }
+    } catch {
+      // Fallback
+    }
   }
-  const data = await res.json();
-  return data.locations || [];
+
+  return searchLocationsClient(query);
 }
 
 export async function fetchFestivals(
   year?: number,
   month?: number,
   region: string = 'ALL'
-): Promise<any[]> {
-  const parts: string[] = [`region=${encodeURIComponent(region)}`];
-  if (year) parts.push(`year=${year}`);
-  if (month) parts.push(`month=${month}`);
-
-  const res = await fetch(`${API_BASE}/api/festivals?${parts.join('&')}`);
-  if (!res.ok) {
-    throw new Error(`Failed to fetch festivals: ${res.statusText}`);
+): Promise<FestivalItem[]> {
+  if (API_BASE) {
+    try {
+      const parts: string[] = [`region=${encodeURIComponent(region)}`];
+      if (year) parts.push(`year=${year}`);
+      if (month) parts.push(`month=${month}`);
+      const res = await fetch(`${API_BASE}/api/festivals?${parts.join('&')}`);
+      if (res.ok) {
+        const data = await res.json();
+        return data.festivals || [];
+      }
+    } catch {
+      // Fallback
+    }
+  } else {
+    try {
+      const parts: string[] = [`region=${encodeURIComponent(region)}`];
+      if (year) parts.push(`year=${year}`);
+      if (month) parts.push(`month=${month}`);
+      const res = await fetch(`/api/festivals?${parts.join('&')}`);
+      if (res.ok) {
+        const data = await res.json();
+        return data.festivals || [];
+      }
+    } catch {
+      // Fallback
+    }
   }
-  const data = await res.json();
-  return data.festivals || [];
+
+  return fetchFestivalsClient(year, month, region);
 }
